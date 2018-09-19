@@ -37,7 +37,7 @@ class DrawModel(nn.Module):
     # correct
     def compute_mu(self,g,rng,delta):
         rng_t,delta_t = align(rng,delta)
-        tmp = (rng_t - self.N / 2 - 0.5) * delta_t
+        tmp = (rng_t - self.N / 2 - 0.5).float() * delta_t
         tmp_t,g_t = align(tmp,g)
         mu = tmp_t + g_t
         return mu
@@ -102,7 +102,7 @@ class DrawModel(nn.Module):
     # correct
     def filterbank_matrices(self,a,mu_x,sigma2,epsilon=1e-9):
         t_a,t_mu_x = align(a,mu_x)
-        temp = t_a - t_mu_x
+        temp = t_a.float() - t_mu_x
         temp,t_sigma = align(temp,sigma2)
         temp = temp / (t_sigma * 2)
         F = torch.exp(-torch.pow(temp,2))
